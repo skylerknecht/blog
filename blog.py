@@ -2,10 +2,11 @@ from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 list_of_blogs = [
-{ 'title': '> The First One','file_name':'thefirstone.html'}
+{ 'title': '> Kerberos within Active Directory','file_name':'kerberoswithinactivedirectory.html'}
 ]
 
 @app.route("/")
+@app.route("/home")
 def home():
     return render_template('home.html')
 
@@ -15,11 +16,12 @@ def blogs():
 
 @app.route("/blog/<string:file_name>")
 def blog(file_name):
-    return render_template(file_name)
+    return render_template(f'/blogs/{file_name}')
 
 @app.route("/about")
 def about():
-    return "Nope"
+    return render_template('about.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0') 
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.run(host='0.0.0.0')
