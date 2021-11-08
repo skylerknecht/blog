@@ -1,4 +1,6 @@
 from flask import Flask, render_template, url_for
+from werkzeug.exceptions import HTTPException
+
 app = Flask(__name__)
 
 list_of_blogs = [
@@ -21,6 +23,10 @@ def blog(file_name):
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+@app.errorhandler(HTTPException)
+def handle_excpetion(e):
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
