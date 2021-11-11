@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="container-fluid bg-dark min-vh-100">
+    <div class="container-fluid bg-dark min-vh-100 justify-content-center">
         <div class="row font-monospace text-white">
             <div class="col-md-12 text-center p-3 text-white">
                 <p class="fs-2">Kerberos within Active Directory</p>
@@ -28,29 +28,29 @@
                   A SPN is a unique identifier consisting of the service name (i.e., MSSQL), the hostname of system running
                   the service (i.e., WS01.rayke.dev) and an optional port (i.e., 1337). In this instance the SPN would be MSSQL/WS01.rayke.dev:1337.
                   This unique identfier provides an SP with the name of the service, where the service is running and what port the service is running on.
+                  To configure a SPN within a domain (i.e., rayke.dev), users with the <b> Validated write to service principal name </b> permission can run, setspn -S SPN DOMAIN-USER, on a domain controller.
                 </p>
+              </div>
+                <div class="card col-8 bg-light container-fluid text-dark text-left">
+                   <div class="card-body">
+                     C:\Users\Administrator> setspn -S MSSQL/WS01.rayke.dev:1337 MSSQL.SERVICE
+                     <br>Checking domain DC=rayke,DC=dev
+                     <br><br>Registering ServicePrincipalNames for CN=MSSQL Service,OU=Service Accounts,OU=Domain Users,OU=rayke,DC=rayke,DC=dev
+                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MSSQL/WS01.rayke.dev:1337
+                     <br>Updated object
+                     <a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/cc731241(v=ws.11)" type="button" class="btn btn-dark float-end" target="_blank"> setspn </a>
+                   </div>
+                </div>
+              <div class="col-md-12 text-center p-3 text-white">
                 <br><br>
                 <p class="fs-4">Ticket Granting Tickets</p>
                 <p class="fs-7">
                   To authenticate to a service configured with a SPN, a SP must first obtain a Ticket Granting Ticket (TGT).
                   To obtain a TGT, a SP must communicate to the Authentication Server (AS) by making an Authentication Server Request (AS-REQ).
-                  A AS-REQ consists of, The SP's account name and an optional encryption key created from a time-stamp and the SP's NTLM hash.
-                  The AS will begin processing the request by checking if the account name is valid. If the account name is invalid then the AS will respond with
-                  PRINCIPAL_UNKOWN. If the account name is valid then one of three actions may occur.
                 </p>
                 <br><br>
-                <ol class="fs-7">
-                 <li> No encryption key is provided -> AS will respond with KRB5KDC_ERR_PREAUTHREQUIRED. </li>
-                 <li> Encryption key is provided -> AS will forward the request to the Key Distribution Center (KDC). </li>
-                 <li> Pre-authenticaiton not required -> AS will forward the request to the Key Distribution Center (KDC). </li>
-                </ol>
-                <br><br>
-                <p class="fs-7">
-                  The KDC will begin processing the request by first decrypting the encryption key and verifying its authenticity through comparing the current time-stamp.  If the encryption key is not authentic then ...
-                  If the encryption key is authentic or if it was not provided as pre-authenticaiton was not required Then the KDC will then respond to the AS with a Ticket Granting Ticket (TGT) a cipher encrypted
-                  with the special key of the Ticket Granting Server (TGS). The AS will then respond to the SP through a Authenticaiton Server Response (AS-REP). A AS-REP consists of an encrypted TGT and
-                  a cipher of the SP's NTLM Hash. The SP can then decrypt the TGT using their NTLM hash and the cipher provided in the AS-REP.
-                </p>
+                <img src="{{url_for('static', filename='Untitled-2.png')}}" class="img-fluid">
+              </div>
             </div>
         </div>
 </body>
